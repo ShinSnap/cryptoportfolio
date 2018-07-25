@@ -1,3 +1,11 @@
 <h1>Welcome to CryptoPortfolio</h1>
 
-<% @response %>
+<% @coins['data'].each do |x| %>
+  <% for coin in @my_coins %>
+    <% if x[1]['symbol'] == coin %>
+      <%= x[1]['name'] %><br/>
+      <%= x[1]['symbol'] %>: $<%= x[1]['quotes']['USD']['price'] %><br/>
+      Rank: <%= x[1]['rank'] %><br/><br/>
+    <% end %>
+  <% end %>
+<% end %>
