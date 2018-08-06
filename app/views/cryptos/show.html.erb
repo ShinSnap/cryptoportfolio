@@ -1,23 +1,33 @@
+<% @show_coin['data'].each do |x| %>
+  <% if x[1]['symbol'] == @crypto.symbol.upcase %>
+    <% @crypto_name = x[1]['name'] %>
+    <% @crypto_price = x[1]['quotes']['USD']['price'] %>
+    <% @crypto_rank = x[1]['rank'] %>
+    <% @crypto_1h = x[1]['quotes']['USD']['percent_change_1h'] %>
+    <% @crypto_24h = x[1]['quotes']['USD']['percent_change_24h'] %>
+    <% @crypto_7d = x[1]['quotes']['USD']['percent_change_7d'] %>
+  <% end %>
+<% end %>
 
-<p>
-  <strong>Symbol:</strong>
-  <%= @crypto.symbol %>
-</p>
+<div class='card'>
+  <div class='card-header'>
+    <%= @crypto_name %>
+  </div>
 
-<p>
-  <strong>User:</strong>
-  <%= @crypto.user_id %>
-</p>
+  <div class='card-body'>
+    <h2><%= @crypto.symbol.upcase %></h2>
+    <strong>Rank: </strong><%= @crypto_rank %><br/>
+    <strong>Price: </strong><%= @crypto_price %><br/>
+    <strong>1h percent change: </strong><%= @crypto_1h %><br/>
+    <strong>24h percent change: </strong><%= @crypto_24h %><br/>
+    <strong>7d percent change: </strong><%= @crypto_7d %><br/>
+    <strong>Cost per: </strong><%= @crypto.cost_per %><br/>
+    <strong>Amount owned: </strong><%= @crypto.amount_owned %>
+  </div>
 
-<p>
-  <strong>Cost per:</strong>
-  <%= @crypto.cost_per %>
-</p>
-
-<p>
-  <strong>Amount owned:</strong>
-  <%= @crypto.amount_owned %>
-</p>
-
-<%= link_to 'Edit', edit_crypto_path(@crypto) %> |
-<%= link_to 'Back', cryptos_path %>
+  <div class='card-footer'>
+    <%= link_to 'Edit', edit_crypto_path(@crypto) %> |
+    <%= link_to 'Back', cryptos_path %> |
+    <%= link_to 'Destroy', crypto_path(@crypto), method: :delete, data: { confirm: 'Are you sure?' } %>
+  </div>
+</div>
