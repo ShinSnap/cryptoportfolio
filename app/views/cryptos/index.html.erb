@@ -1,14 +1,20 @@
 
-<h1>Cryptos</h1>
+<h2>Your Portfolio</h2><br/>
 
-<table>
-  <thead>
+<table class="table table-bordered table-hover table-responsive">
+  <thead class="thead-dark">
     <tr>
-      <th>Symbol</th>
-      <th>User</th>
-      <th>Cost per</th>
-      <th>Amount owned</th>
-      <th colspan="3"></th>
+      <th scope="col">Name</th>
+      <th scope="col">Current Price</th>
+      <th scope="col">Rank</th>
+      <th scope="col">1 HR %</th>
+      <th scope="col">24 HR %</th>
+      <th scope="col">7 Day %</th>
+      <th scope="col">Current Value</th>
+      <th scope="col">Total Paid</th>
+      <th scope="col">Gain/Loss</th>
+      <th scope="col">Cost per</th>
+      <th scope="col">Amount owned</th>
     </tr>
   </thead>
 
@@ -16,19 +22,31 @@
     <% @cryptos.each do |crypto| %>
      <% if current_user.id == crypto.user_id %>
         <tr>
-          <td><%= crypto.symbol %></td>
-          <td><%= crypto.user_id %></td>
+          <% @coins['data'].each do |coin| %>
+              <% if coin[1]['symbol'] == crypto.symbol.upcase %>
+                <td><%= link_to coin[1]['name'], crypto %></td>
+                <td>$<%= coin[1]['quotes']['USD']['price'] %></td>
+                <td><%= coin[1]['rank'] %></td>
+                <td>$<%= coin[1]['quotes']['USD']['percent_change_1h'] %>%</td>
+                <td>$<%= coin[1]['quotes']['USD']['percent_change_24h'] %>%</td>
+                <td>$<%= coin[1]['quotes']['USD']['percent_change_7d'] %>%</td>
+                <td>$<%= coin[1]['quotes']['USD']['price'] * crypto.amount_owned %></td>
+                <td>$<%= crypto.cost_per * crypto.amount_owned %></td>
+                <td>$<%= (coin[1]['quotes']['USD']['price'] * crypto.amount_owned) - (crypto.cost_per * crypto.amount_owned) %></td>
+                <% @gain_loss += (coin[1]['quotes']['USD']['price'] * crypto.amount_owned) - (crypto.cost_per * crypto.amount_owned) %>
+              <% end %>
+          <% end %>
           <td><%= crypto.cost_per %></td>
           <td><%= crypto.amount_owned %></td>
-          <td><%= link_to 'Show', crypto %></td>
-          <td><%= link_to 'Edit', edit_crypto_path(crypto) %></td>
-          <td><%= link_to 'Destroy', crypto, method: :delete, data: { confirm: 'Are you sure?' } %></td>
         </tr>
       <% end %>
     <% end %>
   </tbody>
 </table>
 
-<br>
+<br><br/>
 
+<strong>Portfolio Total Gain/Loss: </strong><%= number_to_currency(@gain_loss) %>
+
+<br/><br/>
 <%= link_to 'New Crypto', new_crypto_path %>
