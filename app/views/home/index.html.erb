@@ -1,11 +1,42 @@
-<h1>Welcome to CryptoPortfolio</h1>
+<table class="table">
 
-<% @coins['data'].each do |x| %>
-  <% for coin in @my_coins %>
-    <% if x[1]['symbol'] == coin %>
-      <%= x[1]['name'] %><br/>
-      <%= x[1]['symbol'] %>: $<%= x[1]['quotes']['USD']['price'] %><br/>
-      Rank: <%= x[1]['rank'] %><br/><br/>
-    <% end %>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">Symbol</th>
+      <th scope="col">Price</th>
+      <th scope="col">Change 24h</th>
+    </tr>
+  </thead>
+  <% @coins['data'].each do |x| %>
+  <tbody>
+    <tr>
+      <th scope="row"><%= x[1]['name'] %></th>
+      <td><%= x[1]['symbol'] %></td>
+      <td><%= number_to_currency(x[1]['quotes']['USD']['price']) %></td>
+      <td><%= x[1]['quotes']['USD']['percent_change_24h'] %>%</td>
+    </tr>
+    </tr>
+  </tbody>
   <% end %>
-<% end %>
+</table>
+
+<br/><br/>
+
+<div class="container">
+  <div class="row">
+    <% for items in @news['Data'] %>
+      <div class="col-sm">
+        <div class="card" style="width: 18rem;">
+          <img class="card-img-top" src="<%= items['imageurl'] %>" alt="<%= items['source'] %>">
+          <div class="card-body">
+            <h5 class="card-title"><%= items['title']%></h5>
+            <p class="card-text"><%= items['body'].truncate(150) %></p>
+            <a href="<%= items['url'] %>" class="btn btn-primary">Read more...</a>
+          </div>
+        </div>
+      <br/>
+      </div>
+    <% end %>
+  </div>
+</div>

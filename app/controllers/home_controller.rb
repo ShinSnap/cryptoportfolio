@@ -3,12 +3,17 @@ class HomeController < ApplicationController
     require 'net/http'
     require 'json'
 
-    url = 'https://api.coinmarketcap.com/v2/ticker/'
+    #Price date
+    url = 'https://api.coinmarketcap.com/v2/ticker/?limit=5&sort=percent_change_24h'
     uri = URI(url)
     response = Net::HTTP.get(uri)
     @coins = JSON.parse(response)
 
-    @my_coins = [ "BTC", "XRP", "ETC", "XLM", "NEO", "WAX", "STEEM" ]
+    #News Data
+    url = 'https://min-api.cryptocompare.com/data/v2/news/?lang=EN'
+    uri = URI(url)
+    response = Net::HTTP.get(uri)
+    @news = JSON.parse(response)
   end
 
   def lookup
